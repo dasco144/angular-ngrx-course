@@ -6,7 +6,8 @@ import { noop } from 'rxjs';
 import { Router } from '@angular/router';
 
 import { AuthService } from '../auth.service';
-import { AppState, Login } from '../../reducers';
+import { AppState } from '../../reducers';
+import { Login } from '../auth.actions';
 
 @Component({
     selector: 'login',
