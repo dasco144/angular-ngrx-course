@@ -8,6 +8,8 @@ import { MatToolbarModule } from '@angular/material/toolbar';
 import { BrowserModule } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { RouterModule, Routes } from '@angular/router';
+import { EffectsModule } from '@ngrx/effects';
+import { RouterStateSerializer, StoreRouterConnectingModule } from '@ngrx/router-store';
 import { StoreModule } from '@ngrx/store';
 import { StoreDevtoolsModule } from '@ngrx/store-devtools';
 
@@ -15,7 +17,8 @@ import { environment } from '../environments/environment';
 import { AppComponent } from './app.component';
 import { AuthGuard } from './auth/auth.guard';
 import { AuthModule } from './auth/auth.module';
-import { reducers } from './reducers';
+import { metaReducers, reducers } from './reducers';
+import { CustomSerializer } from './shared/utils';
 
 const routes: Routes = [
     {
@@ -28,7 +31,6 @@ const routes: Routes = [
         redirectTo: '/'
     }
 ];
-
 
 @NgModule({
     declarations: [
@@ -45,10 +47,14 @@ const routes: Routes = [
         MatListModule,
         MatToolbarModule,
         AuthModule.forRoot(),
-        StoreModule.forRoot(reducers),
-        !environment.production ? StoreDevtoolsModule.instrument() : []
+        StoreModule.forRoot(reducers, { metaReducers: metaReducers }),
+        EffectsModule.forRoot([]),
+        !environment.production ? StoreDevtoolsModule.instrument() : [],
+        StoreRouterConnectingModule.forRoot({ stateKey: 'router' })
     ],
-    providers: [],
+    providers: [
+        { provide: RouterStateSerializer, useClass: CustomSerializer }
+    ],
     bootstrap: [AppComponent]
 })
 export class AppModule {
