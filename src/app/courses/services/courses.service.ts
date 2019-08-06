@@ -1,6 +1,6 @@
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { Observable, of } from 'rxjs';
+import { Observable, of, throwError } from 'rxjs';
 import { delay, map } from 'rxjs/operators';
 
 import { COURSES, findCourseById, findLessonsForCourse } from '../../../../server/db-data';
@@ -86,6 +86,7 @@ export class CoursesService {
         return of(lessons).pipe(
             delay(500),
             map(res => {
+                // throw new Error('Random Error');
                 const lessonArr: Lesson[] = [];
                 Object.keys(res).forEach(key => {
                     const lesson = res[key] as Lesson;

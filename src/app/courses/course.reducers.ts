@@ -1,62 +1,52 @@
-import {Course} from './model/course';
-import {createEntityAdapter, EntityAdapter, EntityState} from '@ngrx/entity';
-import {CourseActions, CourseActionTypes} from './course.actions';
+import { createEntityAdapter, EntityAdapter, EntityState } from '@ngrx/entity';
 
-
+import { Course } from './model/course';
+import { CourseActions, CourseActionTypes } from './course.actions';
 
 export interface CoursesState extends EntityState<Course> {
 
-  allCoursesLoaded:boolean;
+    allCoursesLoaded: boolean;
 
 }
 
 
-export const adapter : EntityAdapter<Course> =
-  createEntityAdapter<Course>();
+export const adapter: EntityAdapter<Course> =
+    createEntityAdapter<Course>();
 
 
 export const initialCoursesState: CoursesState = adapter.getInitialState({
-  allCoursesLoaded: false
+    allCoursesLoaded: false
 });
 
 
-export function coursesReducer(state = initialCoursesState , action: CourseActions): CoursesState {
+export function coursesReducer(state = initialCoursesState, action: CourseActions): CoursesState {
 
-  switch(action.type) {
+    switch (action.type) {
 
-    case CourseActionTypes.CourseLoaded:
+        case CourseActionTypes.CourseLoaded:
 
-      return adapter.addOne(action.payload.course, state);
+            return adapter.addOne(action.payload.course, state);
 
-    case CourseActionTypes.AllCoursesLoaded:
+        case CourseActionTypes.AllCoursesLoaded:
 
-      return adapter.addAll(action.payload.courses, {...state, allCoursesLoaded:true});
+            return adapter.addAll(action.payload.courses, { ...state, allCoursesLoaded: true });
 
-    case CourseActionTypes.CourseSaved:
+        case CourseActionTypes.CourseSaved:
 
-      return adapter.updateOne(action.payload.course,state);
+            return adapter.updateOne(action.payload.course, state);
 
-    default: {
+        default: {
 
-      return state;
+            return state;
+        }
+
     }
-
-  }
 }
 
-
 export const {
-  selectAll,
-  selectEntities,
-  selectIds,
-  selectTotal
+    selectAll,
+    selectEntities,
+    selectIds,
+    selectTotal
 
 } = adapter.getSelectors();
-
-
-
-
-
-
-
-
