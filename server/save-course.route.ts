@@ -1,6 +1,6 @@
-import {Request, Response} from 'express';
-import {COURSES} from "./db-data";
+import { Request, Response } from 'express';
 
+import { COURSES } from './db-data';
 
 export function saveCourse(req: Request, res: Response) {
 
@@ -18,3 +18,14 @@ export function saveCourse(req: Request, res: Response) {
 
 }
 
+export function saveCourse2(id: number, changes: object) {
+
+  console.log('Saving course 2...');
+
+  COURSES[id] = {
+     ...COURSES[id],
+     ...changes
+ };
+
+  return COURSES[id];
+}
